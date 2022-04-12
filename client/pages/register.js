@@ -22,7 +22,7 @@ const Register = () => {
 
     }
 
-    const form = () => <form onSubmit={handleSubmit}>
+    const form = () => <form onSubmit={handleSubmit} className='mt-3'>
         <div className="form-group ">
             <input className="form-control" placeholder="Enter Your Name" type="text" name="name" value={name} onChange={handleOnChange} />
         </div>
@@ -32,9 +32,9 @@ const Register = () => {
         <div className="form-group mt-3 mb-2">
             <input className="form-control" placeholder="Enter Your Password" type="password" name="password" value={password} onChange={handleOnChange} />
         </div>
-        <div className="form-group mt-3 mb-2">
-            <button className="btn btn-outline-warning btn-block">{buttonText}</button>
-        </div>
+
+        <button className="btn btn-outline-warning btn-block mt-3 mb-2">{buttonText}</button>
+
     </form>
 
 
