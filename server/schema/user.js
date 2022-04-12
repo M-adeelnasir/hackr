@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -42,6 +43,20 @@ const userSchema = new mongoose.Schema({
     }
 
 }, { timestamps: true })
+
+
+//encypt the password
+userSchema.pre('save', async function (next) {
+    const salt = await bcrypt.genSalt(10);
+    this.password = await bcrypt.hash(this.password, salt)
+})
+
+//compare the password from client enter and the password in DB
+userSchema.methods.matchPassword = async function (enteredPassword) {
+    return await bcrypt.compare(enteredPassword, this.password)
+}
+
+
 
 
 module.exports = mongoose.model("User", userSchema)
