@@ -12,6 +12,7 @@ dotenv.config({ path: "./dotenvVariables/config.env" })
 
 
 app.use(cors())
+// app.use(cors({ origin: process.env.CLIENT_URL }))
 
 if (process.env.NODE_ENV === "development") {
     app.use(morgan('dev'))

@@ -1,5 +1,7 @@
 import Layouts from "../components/Layouts"
 import { useState } from "react"
+import { addUser } from "../components/requests/user"
+import axios from "axios"
 
 const Register = () => {
     const [state, setState] = useState({
@@ -19,6 +21,13 @@ const Register = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        addUser(name, email, password)
+            .then((res) => {
+                console.log(res);
+            }).catch((err) => {
+                console.log(err);
+            })
+
 
     }
 

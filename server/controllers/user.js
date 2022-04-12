@@ -1,7 +1,7 @@
 exports.createUser = (req, res) => {
-    res.json({
-        success: true,
-        data: "Hello there"
-    })
-    console.log("hello there");
+    try {
+        console.log("Data From client side ===>", req.body);
+    } catch (err) {
+        console.log(err);
+    }
 }
