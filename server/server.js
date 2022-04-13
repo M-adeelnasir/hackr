@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const morgan = require('morgan')
 const fs = require('fs')
+const connectDB = require('./dotenvVariables/db')
 const routes = fs.readdirSync('./routes')
 const app = express()
 dotenv.config({ path: "./dotenvVariables/config.env" })
@@ -19,7 +20,7 @@ if (process.env.NODE_ENV === "development") {
 }
 
 app.use(express.json())
-
+connectDB()
 
 routes.map((r) => app.use('/api/v1', require('./routes/' + r)));
 
