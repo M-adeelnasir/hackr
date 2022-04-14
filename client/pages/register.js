@@ -1,5 +1,5 @@
 import Layouts from "../components/Layouts"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { addUser } from "../components/requests/user"
 
 
@@ -14,32 +14,40 @@ const Register = () => {
         loading: false
     })
 
+
+
+
     const { name, email, password, error, success, buttonText, loading } = state
 
     const handleOnChange = (e) => {
         setState({ ...state, [e.target.name]: e.target.value, success: "", error: "", buttonText: "Register" })
     }
 
-    const handleSubmit = (e) => {
-        setState({ ...state, loading: true })
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        addUser(name, email, password)
-            .then((res) => {
-                console.log(res);
-                setState({
-                    ...state,
-                    name: "",
-                    email: "",
-                    password: "",
-                    buttonText: "Submitted",
-                    success: res.data.data,
-                    loading: false
-                })
-
-            }).catch((err) => {
-                console.log(err.response);
-                setState({ ...state, buttonText: "Register", error: err.response.data.data })
+        setState({ ...state, loading: true })
+        try {
+            const res = await addUser(name, email, password)
+            console.log(res);
+            setState({
+                ...state,
+                name: "",
+                email: "",
+                password: "",
+                buttonText: "Submitted",
+                success: res.data.data,
+                loading: false
             })
+        } catch (err) {
+            console.log(err.response);
+            if (err.response.data.errors) {
+                // console.log(err.response.data.errors);
+                setState({ ...state, buttonText: "Register", error: err.response.data.errors })
+                return
+            }
+            setState({ ...state, buttonText: "Register", error: err.response.data.data })
+        }
+
 
 
     }
@@ -57,13 +65,13 @@ const Register = () => {
 
         {loading ?
 
-            <div class="d-flex justify-content-center mt-3 mb-2">
-                <div class="spinner-border text-warning" role="status">
-                    <span class="sr-only"></span>
+            <div className="d-flex justify-content-center mt-3 mb-2">
+                <div className="spinner-border text-warning" role="status">
+                    <span className="sr-only"></span>
                 </div>
             </div>
 
-            : <button button className="btn btn-outline-warning btn-block mt-3 mb-2">{buttonText}</button>}
+            : <button className="btn btn-outline-warning btn-block mt-3 mb-2">{buttonText}</button>}
 
 
         {error && <div className="alert alert-danger pt-1 pb-1 text-center" role="alert">
