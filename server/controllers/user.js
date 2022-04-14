@@ -25,15 +25,6 @@ exports.createUser = async (req, res) => {
         httpOnly: true
     }
 
-    res.status(200)
-        .cookie('token', token, options)
-        .json({
-            Success: true,
-            token: token,
-            options
-        })
-
-
 
 
     //send email
@@ -47,9 +38,10 @@ exports.createUser = async (req, res) => {
     const params = {
         Destination: {
             ToAddresses: [
-                process.env.EMAIL_TO
+                email
             ],
         },
+        ReplyToAddresses: [process.env.EMAIL_TO],
         Message: {
             Body: {
                 Html: {
@@ -76,9 +68,20 @@ exports.createUser = async (req, res) => {
     sendPromise
         .then(data => {
             console.log("Email submites =>", data);
+            res.status(200)
+                .cookie('token', token, options)
+                .json({
+                    Success: true,
+                    token: token,
+                    data: `Email has been sent to ${email}`
+                })
 
         }).catch(err => {
             console.log(err);
+            res.status(400).json({
+                success: false,
+                data: "Email sent failed try again with a Valid email"
+            })
         })
 
 }
