@@ -4,3 +4,9 @@ export const addUser = async (name, email, password) => {
         { name, email, password }
     )
 }
+
+export const activateAccount = async (token) => {
+    return await axios.post(`${process.env.NEXT_PUBLIC_API_REQUEST_URL}/register/activate`,
+        { token }
+    )
+}

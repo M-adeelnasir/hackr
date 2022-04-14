@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import jwt from 'jsonwebtoken'
 import Layouts from '../../../components/Layouts'
-
+import { activateAccount } from '../../../components/requests/user'
 
 const ActivateAccount = ({ router }) => {
 
@@ -26,8 +26,18 @@ const ActivateAccount = ({ router }) => {
     }, [])
 
 
-    const handleAvtivate = (e) => {
+    const handleAvtivate = async (e) => {
         e.preventDefault();
+
+        try {
+            const res = await activateAccount(token)
+            console.log(res);
+            setValues({ ...values, success: res.data.data })
+
+        } catch (err) {
+            console.log(err);
+            setValues({ ...values, error: err.data.data })
+        }
 
     }
 
@@ -37,11 +47,17 @@ const ActivateAccount = ({ router }) => {
 
             <div className="row">
                 <div className="col-md-6 offset-md-3">
-                    <h3>Thanks'{name} For registration Activate your account!</h3>
+                    <h4>Thanks'<span className='text-warning'>{name}</span> For registration Plesase Activate your account!</h4>
                     <br />
-                    <button onClick={handleAvtivate} className="btn btn-outline-warning w-100">
-                        Activate Account
-                    </button>
+                    {success ?
+                        (<button onClick={handleAvtivate} className="btn btn-outline-warning w-100">
+                            Activated
+                        </button>)
+                        :
+                        <button onClick={handleAvtivate} className="btn btn-outline-warning w-100">
+                            Activate Account
+                        </button>
+                    }
                 </div>
             </div>
 
