@@ -25,6 +25,11 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
+    "/auth/activate/[id]": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/auth/activate/[id].js"
+    ],
     "/register": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
