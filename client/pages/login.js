@@ -2,9 +2,12 @@ import { useEffect, useState } from 'react'
 import Layouts from '../components/Layouts'
 import { loginUser } from '../components/requests/user'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { authenticate } from '../components/helpers/auth'
 
 
 const Login = () => {
+
     const [state, setState] = useState({
         email: "adnasirkbw@gmail.com",
         password: "123456hjh",
@@ -12,7 +15,7 @@ const Login = () => {
     })
     const { email, password, error, success, buttonText } = state
     const [loading, setLoading] = useState(false)
-
+    const router = useRouter()
 
     const handleChange = (e) => {
         setState({
@@ -28,6 +31,7 @@ const Login = () => {
             const res = await loginUser(email, password)
             console.log(res);
             setLoading(false)
+            authenticate(res, () => router.push('/'))
         } catch (err) {
             setLoading(false)
             console.log(err.response);
