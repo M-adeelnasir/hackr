@@ -177,16 +177,24 @@ exports.loginUser = async (req, res) => {
         })
     }
 
-
+    const { _id, name, username, role } = user
     const token = jwt.sign({ _id: user._id }, process.env.JWT_LOGIN_SECRET,
         {
             expiresIn: process.env.JWT_TOKEN_EXPIRES
         })
+    //optional for jwt cookies
+    const options = {
+        //jwt token cookie gets expires in  
+        expires: new Date(Date.now() + process.env.JWT_TOKEN_COOKIE_EXPIRES * 24 * 12 * 60 * 1000),
+        httpOnly: true
+    }
 
-    res.status(200).json({
-        success: true,
-        user: user,
-        token: token
-    })
+    res.status(200)
+        .cookie('token', token, options)
+        .json({
+            success: true,
+            user: { _id, name, username, role, email },
+            token: token
+        })
 
 }
