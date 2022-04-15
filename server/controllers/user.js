@@ -1,6 +1,7 @@
 const AWS = require('aws-sdk');
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
+const shortid = require('shortid');
 
 
 exports.createUser = async (req, res) => {
@@ -86,5 +87,69 @@ exports.createUser = async (req, res) => {
 
 }
 
+
+//activate account
+
+exports.activateUer = async (req, res) => {
+    const { token } = req.body
+
+    try {
+        // console.log(token);
+
+        // verify the token
+        jwt.verify(token, process.env.JWT_SECRET, (err, decodedData) => {
+            if (err) {
+                return res.status(401).json({
+                    success: false,
+                    data: "Expired link. Try again!"
+                })
+            }
+
+            const { name, email, password } = jwt.decode(token)
+
+            //unique username of user
+            const username = shortid.generate();
+
+
+            //find the user,check the account already axist or not
+            User.findOne({ email: email }).exec((err, user) => {
+                if (user) {
+                    return res.status(401).json({
+                        success: false,
+                        data: `Already Account exists on ${email}`
+                    })
+                }
+            })
+
+
+            //create user
+            const user = new User({ name, email, password, username })
+            user.save((err, user) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(400).json({
+                        success: false,
+                        data: `Already Account exists on ${email}`
+                    })
+                }
+                res.status(200).json({
+                    success: true,
+                    user: user,
+                    data: "Registeration complete, Please Login",
+                })
+            })
+
+
+        })
+
+
+    } catch (err) {
+        console.log(err);
+        res.status(404).json({
+            success: false,
+            data: "Activation Account Failed"
+        })
+    }
+}
 
 

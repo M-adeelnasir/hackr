@@ -1,29 +1,44 @@
 import { withRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import jwt from 'jsonwebtoken'
+import router from 'next/router'
 import Layouts from '../../../components/Layouts'
 import { activateAccount } from '../../../components/requests/user'
+import Link from 'next/link'
 
-const ActivateAccount = ({ router }) => {
+const ActivateAccount = (props) => {
+
+
 
     const [values, setValues] = useState({
         name: "",
         success: "",
         error: "",
         token: "",
-
     })
+
+
     const { name, success, error, token } = values;
 
 
     useEffect(() => {
-        // console.log(JSON.stringify(router), null, 4)
-        let token = router.query.id;
-        //decode the name of user fromtoken
-        const { name } = jwt.decode(token)
-        setValues({ ...values, name: name, token: token, })
-    }, [])
+        // console.log(props.router.isReady);
+        // console.log("Router==>", props)
+        // console.log(props.router.query.id);
+    }, [props.router.isReady])
+
+
+
+    useEffect(() => {
+        if (props.router.isReady) {
+            // console.log(JSON.stringify(router), null, 4)
+            let token = router.query.id;
+            console.log(token);
+            //decode the name of user fromtoken
+            const { name } = jwt.decode(token)
+            setValues({ ...values, name: name, token: token, })
+        }
+    }, [props.router.isReady])
 
 
     const handleAvtivate = async (e) => {
@@ -58,6 +73,13 @@ const ActivateAccount = ({ router }) => {
                             Activate Account
                         </button>
                     }
+                    {error && <div className="alert alert-danger  pt-1 pb-1 text-center" role="alert">
+                        {error}
+                    </div>}
+
+                    {success && <div className="alert alert-info mt-3 pt-1 pb-1 text-center" role="alert">
+                        Registration Complete. {<Link href='/login'><a className='text-warning'>please Login</a></Link>}
+                    </div>}
                 </div>
             </div>
 
