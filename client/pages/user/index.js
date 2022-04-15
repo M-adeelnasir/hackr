@@ -1,8 +1,11 @@
 import React from 'react'
+import Layouts from '../../components/Layouts'
 
 const index = () => {
     return (
-        <div>index</div>
+        <Layouts>
+            <h4>User</h4>
+        </Layouts>
     )
 }
 

@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import Router from 'next/router'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
+import { isAuth, logoutUser } from './helpers/auth'
 
 
 
@@ -22,27 +23,71 @@ const Layouts = ({ children }) => {
         </Head>
     }
 
+    const [isSSR, setIsSSR] = useState(true);
+
+    useEffect(() => {
+        setIsSSR(false);
+    }, []);
+
+
+
     return (
         <React.Fragment>
             {head()}
-            <div className="nav nav-tabs bg-warning">
-                <li className="nav-item">
-                    <Link href='/'>
-                        <a className="nav-link  text-dark">Home</a>
-                    </Link>
+            <nav className="navbar nav-tabs navbar-expand-lg bg-warning justify-content-between">
+                <ul className='navbar-nav mr-auto'>
+                    <li className="nav-item">
+                        <Link href='/'>
+                            <a className="nav-link  text-dark">Home</a>
+                        </Link>
 
-                </li>
-                <li className="nav-item">
-                    <Link href='/login'>
-                        <a className="nav-link  text-dark">Login</a>
-                    </Link>
-                </li>
-                <li className="nav-item">
-                    <Link href='/register'>
-                        <a className="nav-link  text-dark">Register</a>
-                    </Link>
-                </li>
-            </div>
+                    </li>
+                    <li className="nav-item">
+                        <Link href='/login'>
+                            <a className="nav-link  text-dark">Login</a>
+                        </Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link href='/register'>
+                            <a className="nav-link  text-dark">Register</a>
+                        </Link>
+                    </li>
+                </ul>
+
+
+
+                <ul className="navbar-nav ml-auto">
+                    {
+                        !isSSR && (isAuth() && isAuth().role === 'admin' && (
+                            <li className="nav-item ">
+                                <Link href='/admin/dashboard'>
+                                    <a className="nav-link  text-dark">{isAuth().name}</a>
+                                </Link>
+                            </li>
+                        ))
+
+                    }
+                    {
+                        !isSSR && (isAuth() && isAuth().role === 'subscriber' && (
+                            <li className="nav-item ">
+                                <Link href='/user'>
+                                    <a className="nav-link  text-dark">{isAuth().name}</a>
+                                </Link>
+                            </li>
+                        ))
+
+                    }
+
+
+                    {!isSSR && (isAuth() && <li className="nav-item">
+
+                        <a style={{ cursor: 'pointer' }} onClick={logoutUser} className="nav-link text-dark">Logout</a>
+                    </li>)}
+                </ul>
+
+
+
+            </nav>
             <div className='container pt-5 pb-5'>{children}</div>
         </React.Fragment>
 
