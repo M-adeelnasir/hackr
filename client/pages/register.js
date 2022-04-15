@@ -1,9 +1,18 @@
 import Layouts from "../components/Layouts"
 import { useState, useEffect } from "react"
+import { useRouter } from "next/router"
 import { addUser } from "../components/requests/user"
+import { isAuth } from "../components/helpers/auth"
 
 
 const Register = () => {
+
+    const router = useRouter()
+    useEffect(() => {
+        isAuth() && router.push('/')
+    })
+
+
     const [state, setState] = useState({
         name: "Adeel Nasir",
         email: "adnasirkbw@gmail.com",
@@ -13,6 +22,7 @@ const Register = () => {
         buttonText: "Register",
         loading: false
     })
+
 
 
     const { name, email, password, error, success, buttonText, loading } = state

@@ -6,13 +6,15 @@ import thunk from "redux-thunk";
 
 
 const middleware = [thunk];
+const initialState = {}
 
 const rootReducer = combineReducers({
-    userReducer,
+    user: userReducer,
 })
 
 export const store = createStore(
     rootReducer,
+    initialState,
     composeWithDevTools(applyMiddleware(...middleware))
 );
 

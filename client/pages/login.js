@@ -3,7 +3,9 @@ import Layouts from '../components/Layouts'
 import { loginUser } from '../components/requests/user'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { authenticate } from '../components/helpers/auth'
+import { authenticate, isAuth } from '../components/helpers/auth'
+
+
 
 
 const Login = () => {
@@ -15,23 +17,45 @@ const Login = () => {
     })
     const { email, password, error, success, buttonText } = state
     const [loading, setLoading] = useState(false)
+
     const router = useRouter()
 
+
+    useEffect(() => {
+        isAuth() && router.push('/')
+    }, [])
+
+
+    //change in input
     const handleChange = (e) => {
         setState({
             ...state, [e.target.name]: e.target.value, error: ""
         })
+
+
     }
 
-
+    //submite login
     const handleLoginSubmite = async (e) => {
         setLoading(true)
         e.preventDefault()
         try {
             const res = await loginUser(email, password)
-            console.log(res);
             setLoading(false)
-            authenticate(res, () => router.push('/'))
+
+            //store user in localstorage and token in cookis
+            authenticate(res, () => {
+                if (isAuth()) {
+                    if (isAuth().role === "admin") {
+                        return router.push('/admin/dashboard')
+                    }
+                    else {
+                        return router.push('/user')
+                    }
+                }
+            })
+
+
         } catch (err) {
             setLoading(false)
             console.log(err.response);
@@ -39,6 +63,12 @@ const Login = () => {
 
         }
     }
+
+
+
+
+
+
 
     const form = () => <form onSubmit={handleLoginSubmite} >
         <div className="form-group mt-3 mb-2">
