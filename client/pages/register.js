@@ -15,8 +15,6 @@ const Register = () => {
     })
 
 
-
-
     const { name, email, password, error, success, buttonText, loading } = state
 
     const handleOnChange = (e) => {
@@ -28,7 +26,7 @@ const Register = () => {
         setState({ ...state, loading: true })
         try {
             const res = await addUser(name, email, password)
-            console.log(res);
+            // console.log(res);
             setState({
                 ...state,
                 name: "",
@@ -39,7 +37,7 @@ const Register = () => {
                 loading: false
             })
         } catch (err) {
-            console.log(err.response);
+            // console.log(err.response);
             if (err.response.data.errors) {
                 // console.log(err.response.data.errors);
                 setState({ ...state, buttonText: "Register", error: err.response.data.errors })
@@ -47,9 +45,6 @@ const Register = () => {
             }
             setState({ ...state, buttonText: "Register", error: err.response.data.data })
         }
-
-
-
     }
 
     const form = () => <form onSubmit={handleSubmit} className='mt-3'>

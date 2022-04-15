@@ -16,7 +16,7 @@ exports.createUser = async (req, res) => {
     }
 
     const token = jwt.sign({ name, email, password }, process.env.JWT_SECRET, {
-        expiresIn: process.env.JWT_TOKEN_EXPIRES
+        expiresIn: process.env.JWT_REGISTER_TOKEN_EXPIRES
     })
 
     //optional for jwt cookies
@@ -153,3 +153,40 @@ exports.activateUer = async (req, res) => {
 }
 
 
+
+
+
+
+//login
+
+exports.loginUser = async (req, res) => {
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email }).select('+password')
+    if (!user) {
+        return res.status(400).json({
+            data: "Invalid Credentials"
+        })
+    }
+
+    const isMatch = await user.matchPassword(password)
+
+    if (!isMatch) {
+        return res.status(400).json({
+            data: "Invalid Credentials"
+        })
+    }
+
+
+    const token = jwt.sign({ _id: user._id }, process.env.JWT_LOGIN_SECRET,
+        {
+            expiresIn: process.env.JWT_TOKEN_EXPIRES
+        })
+
+    res.status(200).json({
+        success: true,
+        user: user,
+        token: token
+    })
+
+}

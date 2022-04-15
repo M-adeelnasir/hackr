@@ -11,3 +11,8 @@ exports.checkUserValidation =
         .isLength({ min: 6 })
         .withMessage("Password must 6 char long")]
 
+exports.checkUserLoginValidation = [
+    body('email')
+        .isEmail()
+        .withMessage('Email is required')
+]

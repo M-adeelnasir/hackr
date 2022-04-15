@@ -8,16 +8,12 @@ import Link from 'next/link'
 
 const ActivateAccount = (props) => {
 
-
-
     const [values, setValues] = useState({
         name: "",
         success: "",
         error: "",
         token: "",
     })
-
-
     const { name, success, error, token } = values;
 
 
@@ -26,7 +22,6 @@ const ActivateAccount = (props) => {
         // console.log("Router==>", props)
         // console.log(props.router.query.id);
     }, [props.router.isReady])
-
 
 
     useEffect(() => {
