@@ -5,6 +5,7 @@ const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const morgan = require('morgan')
+const jwt = require('express-jwt');
 const fs = require('fs')
 const connectDB = require('./dotenvVariables/db')
 const routes = fs.readdirSync('./routes')
@@ -23,7 +24,10 @@ if (process.env.NODE_ENV === "development") {
 app.use(express.json())
 connectDB()
 
+
 routes.map((r) => app.use('/api/v1', require('./routes/' + r)));
+
+
 
 
 const PORT = process.env.PORT || 5000
