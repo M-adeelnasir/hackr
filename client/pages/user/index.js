@@ -1,12 +1,36 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Layouts from '../../components/Layouts'
+import { checkAuths } from '../../components/requests/user'
+const User = ({ user }) => {
 
-const index = () => {
+
+
+
+
+
+
     return (
         <Layouts>
-            <h4>User</h4>
+            <h4>{JSON.stringify(user)}</h4>
         </Layouts>
     )
 }
 
-export default index
+
+
+User.getInitialProps = async ({ req }) => {
+    const token = req.cookies.token
+    // console.log(token);
+    try {
+        const res = await checkAuths(token);
+        return { user: res.data }
+    } catch (err) {
+        // console.log("Erooooor======>", err);
+        return { user: "no User" }
+
+    }
+
+}
+
+
+export default User

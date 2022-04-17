@@ -31,7 +31,7 @@ export const getCookie = (key) => {
 //set user and token in cookie
 export const setInLoacalStorage = (key, value) => {
     if (typeof window !== 'undefined') {
-        localStorage.setItem(key, JSON.stringify(value))
+        return localStorage.setItem(key, JSON.stringify(value))
     }
 }
 
@@ -39,7 +39,13 @@ export const setInLoacalStorage = (key, value) => {
 //remove from loacal Strorage
 export const removefromLocalStorage = (key) => {
     if (typeof window !== "undefined") {
-        localStorage.removeItem(key)
+        return localStorage.removeItem(key)
+    }
+}
+//remove from loacal Strorage
+export const gettokenfromlocal = (key) => {
+    if (typeof window !== "undefined") {
+        return JSON.parse(localStorage.getItem(key))
     }
 }
 
@@ -47,6 +53,7 @@ export const removefromLocalStorage = (key) => {
 
 export const authenticate = (res, next) => {
     setCookie('token', res.data.token)
+    setInLoacalStorage('token', res.data.token)
     setInLoacalStorage('user', res.data.user)
     next()
 }

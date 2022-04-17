@@ -1,4 +1,4 @@
-const jwt = require('express-jwt');
+const expressjwt = require('express-jwt');
 const User = require('../models/user');
 
 const { body } = require('express-validator');
@@ -22,12 +22,16 @@ exports.checkUserLoginValidation = [
 
 
 //check if the user have the token 
-exports.requireSignin = jwt({ secret: process.env.JWT_LOGIN_SECRET, algorithms: ['RS256'], })  //req.user
+exports.requireSignin = expressjwt({ secret: process.env.JWT_LOGIN_SECRET, algorithms: ['sha1', 'RS256', 'HS256'], })  //req.user
+
+
 
 
 
 //authCheck for user and admin
 exports.checkAuth = async (req, res, next) => {
+    // console.log(req.user);
+    // console.log(req.headers);
     const UserId = req.user._id
     try {
         const user = await User.findOne({ _id: UserId })
@@ -55,7 +59,7 @@ exports.checkAuth = async (req, res, next) => {
 exports.checkAdmin = async (req, res, next) => {
     const userId = req.user;
     try {
-        const user = await User.findOne({ _id: req.user })
+        const user = await User.findOne({ _id: userId })
         if (!user) {
             return res.status(404).json({
                 success: false,

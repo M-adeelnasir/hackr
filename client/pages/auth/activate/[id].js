@@ -28,7 +28,7 @@ const ActivateAccount = (props) => {
         if (props.router.isReady) {
             // console.log(JSON.stringify(router), null, 4)
             let token = router.query.id;
-            console.log(token);
+            // console.log(token);
             //decode the name of user fromtoken
             const { name } = jwt.decode(token)
             setValues({ ...values, name: name, token: token, })

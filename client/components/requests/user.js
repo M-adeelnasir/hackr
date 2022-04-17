@@ -17,3 +17,17 @@ export const loginUser = async (email, password) => {
         { email, password }
     )
 }
+
+
+//midleware
+export const checkAuths = async (authToken) => {
+    return await axios.get(`${process.env.NEXT_PUBLIC_API_REQUEST_URL}/user`,
+        {
+            headers: {
+                authorization: `Bearer ${authToken}`,
+                contentType: 'application/json'
+
+            }
+        }
+    )
+}
