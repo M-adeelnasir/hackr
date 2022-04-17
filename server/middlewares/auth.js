@@ -20,6 +20,16 @@ exports.checkUserLoginValidation = [
         .withMessage('Email is required')
 ]
 
+//forgot password
+exports.forgotPasswordValidator =
+    [
+        body('email')
+            .isEmail()
+            .withMessage("Email is Required")
+    ]
+
+
+
 
 //check if the user have the token 
 exports.requireSignin = expressjwt({ secret: process.env.JWT_LOGIN_SECRET, algorithms: ['sha1', 'RS256', 'HS256'], })  //req.user
@@ -87,3 +97,6 @@ exports.checkAdmin = async (req, res, next) => {
         })
     }
 }
+
+
+

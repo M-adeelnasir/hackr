@@ -198,3 +198,90 @@ exports.loginUser = async (req, res) => {
         })
 
 }
+
+
+
+
+
+//forgot password
+exports.forgotPassword = async (req, res) => {
+    const { email } = req.body;
+
+
+    AWS.config.update({
+        accessKeyId: process.env.AWS_ACCESS_KEY,
+        secretAccessKey: process.env.AWS_ACCESS_SECRET,
+        region: process.env.AWS_REGION,
+
+    })
+    User.findOne({ email }).exec((err, user) => {
+        if (!user || err) {
+            console.log(err);
+            res.status(400).json({
+                success: false,
+                data: "No account found this Email"
+            })
+        }
+
+
+        const token = jwt.sign({ name: user.name }, process.env.JWT_SECRET, { expiresIn: '10m' })
+
+        var params = {
+            Destination: {
+                CcAddresses: [
+                    email
+                ],
+                ToAddresses: [
+                    process.env.EMAIL_TO
+                ]
+            },
+            Message: {
+                Body: {
+                    Html: {
+                        Charset: "UTF-8",
+                        Data: `<html>
+                    <h1>Hey, there!</h1>
+                    <p>Click the following link to Reset you password</p>
+                     <p>${process.env.CLIENT_URL}/auth/password/reset/${token}</p>
+                    </html>`
+                    }
+                },
+                Subject: {
+                    Charset: 'UTF-8',
+                    Data: 'Test email'
+                }
+            },
+            Source: process.env.EMAIL_FROM, /* required */
+
+        };
+
+
+        return user.updateOne({ resetPasswordLink: token }, (err, success) => {
+            if (err) {
+                console.log(err);
+                res.status(404).json({
+                    success: false,
+                    data: "Reset passoward Failed"
+                })
+            }
+
+            const sendPromise = new AWS.SES({ apiVersion: '2010-12-01' }).sendEmail(params).promise();
+            sendPromise
+                .then(data => {
+                    console.log("Email submites =>", data);
+                    res.json({
+                        Success: true,
+                        token: token,
+                        data: `Email has been sent to ${email}`
+                    })
+
+                }).catch(err => {
+                    console.log(err);
+                    res.status(400).json({
+                        success: false,
+                        data: "Email sent failed try again with a Valid email"
+                    })
+                })
+        })
+    })
+}
