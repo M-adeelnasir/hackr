@@ -47,7 +47,7 @@ exports.categoryCreateValidator = [
         .not()
         .isEmpty()
         .withMessage("Name Is Required"),
-    body('iamge')
+    body('image')
         .not()
         .isEmpty()
         .withMessage("Image is required"),

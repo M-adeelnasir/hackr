@@ -15,7 +15,7 @@ router.post('/category/create', requireSignin, categoryCreateValidator, runValid
 router.get('/categories', getCategories)
 router.get('/category/:slug', getCategory)
 router.delete('/category/delete/:slug', requireSignin, deleteCategory)
-router.post('/category/:slug', requireSignin, categoryUpdateValidator, runValidator, createCategory)
+router.put('/category/:slug', requireSignin, categoryUpdateValidator, runValidator, updateCategory)
 
 
 module.exports = router

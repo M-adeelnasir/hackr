@@ -5,18 +5,18 @@ const slugify = require('slugify')
 const categorySchame = new mongoose.Schema({
     name: {
         type: String,
-        unique: true,
         required: true,
         min: [5, "Name is too short"],
         max: [35, "Name is too long"],
         trim: true
     },
     slug: {
-        slug: String,
+        type: String,
         unique: true,
     },
-    images: {
-        type: Array
+    image: {
+        url: String,
+        key: String
     },
     content: {
         type: {},
@@ -25,7 +25,7 @@ const categorySchame = new mongoose.Schema({
     },
     postedBy: {
         type: ObjectId,
-        ref: 'User'
+        ref: 'User',
     }
 
 
@@ -35,7 +35,7 @@ const categorySchame = new mongoose.Schema({
 
 
 categorySchame.pre('save', function (next) {
-    this.slug = slugify(this.title, { lower: true })
+    this.slug = slugify(this.name, { lower: true })
     next()
 })
 

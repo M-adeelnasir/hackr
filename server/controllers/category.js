@@ -1,14 +1,34 @@
+const Category = require('../models/category')
 
 
 
+exports.createCategory = async (req, res) => {
 
-exports.createCategory = (req, res) => {
+    try {
 
+        const { name, image, content } = req.body;
 
+        const id = req.user._id
+        const category = await Category.create({ name, content, pstedBy: id });
+
+        res.json({
+            success: true,
+            data: category
+        })
+
+    } catch (err) {
+        // console.log(err);
+        res.status(400).json({
+            success: false,
+            data: "User create Failed"
+        })
+    }
 
 
 
 }
+
+
 
 
 
