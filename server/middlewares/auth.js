@@ -40,6 +40,35 @@ exports.resetPasswordValidator = [
 
 
 
+
+//category create walidator
+exports.categoryCreateValidator = [
+    body('name')
+        .not()
+        .isEmpty()
+        .withMessage("Name Is Required"),
+    body('iamge')
+        .not()
+        .isEmpty()
+        .withMessage("Image is required"),
+    body("content")
+        .isLength({ min: 20 })
+        .withMessage("Content Is Required"),
+]
+//category update walidator
+exports.categoryUpdateValidator = [
+    body('name')
+        .not()
+        .isEmpty()
+        .withMessage("Name Is Required"),
+    body("content")
+        .isLength({ min: 20 })
+        .withMessage("Content Is Required"),
+]
+
+
+
+
 //check if the user have the token 
 exports.requireSignin = expressjwt({ secret: process.env.JWT_LOGIN_SECRET, algorithms: ['sha1', 'RS256', 'HS256'], })  //req.user
 
