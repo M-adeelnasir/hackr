@@ -31,3 +31,11 @@ export const checkAuths = async (authToken) => {
         }
     )
 }
+
+
+
+export const forgotPassword = async (email) => {
+    return await axios.put(`${process.env.NEXT_PUBLIC_API_REQUEST_URL}/forgot-password`,
+        { email },
+    )
+}

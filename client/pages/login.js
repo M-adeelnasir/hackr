@@ -65,11 +65,6 @@ const Login = () => {
     }
 
 
-
-
-
-
-
     const form = () => <form onSubmit={handleLoginSubmite} >
         <div className="form-group mt-3 mb-2">
             <input type="email" className="form-control" value={email} name="email" onChange={handleChange} />
@@ -84,7 +79,7 @@ const Login = () => {
 
         <div className='mt-2 float-right'>
 
-            <Link href='/' ><a className='text-danger' >Forgot Password</a></Link>
+            <Link href='/auth/password/forgot' ><a className='text-danger' >Forgot Password</a></Link>
         </div>
 
     </form>

@@ -218,7 +218,7 @@ exports.forgotPassword = async (req, res) => {
     User.findOne({ email }).exec((err, user) => {
         if (!user || err) {
             console.log(err);
-            res.status(400).json({
+            return res.status(400).json({
                 success: false,
                 data: "No account found this Email"
             })
