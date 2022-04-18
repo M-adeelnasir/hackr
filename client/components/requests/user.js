@@ -39,3 +39,10 @@ export const forgotPassword = async (email) => {
         { email },
     )
 }
+
+
+export const resetPassword = async (newPassword, restPasswordLink) => {
+    return await axios.put(`${process.env.NEXT_PUBLIC_API_REQUEST_URL}/reset-password`,
+        { newPassword, restPasswordLink }
+    )
+}

@@ -5,6 +5,8 @@ import Router from 'next/router'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { isAuth, logoutUser } from './helpers/auth'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -85,9 +87,8 @@ const Layouts = ({ children }) => {
                     </li>)}
                 </ul>
 
-
-
             </nav>
+            <ToastContainer />
             <div className='container pt-5 pb-5'>{children}</div>
         </React.Fragment>
 

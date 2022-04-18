@@ -75,7 +75,7 @@ const Login = () => {
 
         {error && <div className='text-danger'>{error}</div>}
 
-        {loading ? <button className="btn btn-outline-warning w-100 mt-2 ">Loging...</button> : <button className="btn btn-outline-warning w-100 mt-2 ">Login</button>}
+        {loading ? <button className="btn btn-outline-warning w-100 mt-2 ">Loging in...</button> : <button className="btn btn-outline-warning w-100 mt-2 ">Login</button>}
 
         <div className='mt-2 float-right'>
 

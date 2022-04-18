@@ -29,6 +29,11 @@
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/auth/password/forgot.js"
+    ],
+    "/auth/password/reset/[id]": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/auth/password/reset/[id].js"
     ]
   },
   "ampFirstPages": []

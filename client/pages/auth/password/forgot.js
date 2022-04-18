@@ -29,9 +29,9 @@ const forgot = () => {
 
     const form = () => <form onSubmit={handleSubmit} >
         <div className="form-group">
-
             <input type="email" className="form-control" autoFocus placeholder='Enter Your Email' value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
+
 
         {error && <div className="alert alert-danger pt-1 pb-1 mt-2 text-center" role="alert">
             {error}
@@ -48,6 +48,8 @@ const forgot = () => {
         <Layouts>
 
             <div className="col-md-6 offset-md-3">
+                <h3>Forgot Password</h3>
+                <br />
                 {form()}
             </div>
         </Layouts>
