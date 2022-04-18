@@ -29,6 +29,15 @@ exports.forgotPasswordValidator =
     ]
 
 
+//reset password
+exports.resetPasswordValidator = [
+    body('newPassword')
+        .isLength({ min: 6 })
+        .withMessage("Password must 6 char long")
+]
+
+
+
 
 
 //check if the user have the token 

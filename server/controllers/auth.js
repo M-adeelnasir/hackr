@@ -2,6 +2,7 @@ const AWS = require('aws-sdk');
 const User = require('../models/user');
 const jwt = require('jsonwebtoken');
 const shortid = require('shortid');
+const _ = require('lodash');
 
 
 exports.createUser = async (req, res) => {
@@ -284,4 +285,72 @@ exports.forgotPassword = async (req, res) => {
                 })
         })
     })
+}
+
+
+
+
+
+//Reset Password
+exports.resetPassword = async (req, res) => {
+    const { restPasswordLink, newPassword } = req.body;
+
+
+    try {
+        if (!restPasswordLink) {
+            return res.status(400).json({
+                success: false,
+                data: "No link"
+            })
+        }
+
+        try {
+            jwt.verify(restPasswordLink, process.env.JWT_SECRET)
+        } catch (err) {
+            return res.status(400).json({
+                success: false,
+                data: "Expired or invalid Link"
+            })
+        }
+
+        let user = await User.findOne({ restPasswordLink })
+        if (!user) {
+            return res.status(400).json({
+                data: "Expired or invalid Link"
+            })
+        }
+
+        const updateFields = {
+            password: newPassword,
+            resetPasswordLink: ""
+        }
+
+        user = _.extend(user, updateFields)
+
+        user.save((err, result) => {
+            if (err) {
+                return res.status(400).json({
+                    success: false,
+                    data: "Reset password Faild, try later"
+                })
+            }
+
+            res.status(200).json({
+                success: true,
+                data: "Password Updated Successfully"
+            })
+
+        })
+
+
+    }
+    catch (err) {
+        // console.log(err);
+        res.status(400).json({
+            success: false,
+            data: "Reset password Faild, try later"
+        })
+    }
+
+
 }
