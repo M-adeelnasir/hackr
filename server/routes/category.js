@@ -11,7 +11,7 @@ const { createCategory, deleteCategory, getCategories, getCategory, updateCatego
 
 
 
-router.post('/category/create', requireSignin, categoryCreateValidator, runValidator, createCategory)
+router.post('/category/create', requireSignin, createCategory)
 router.get('/categories', getCategories)
 router.get('/category/:slug', getCategory)
 router.delete('/category/delete/:slug', requireSignin, deleteCategory)
